@@ -17,3 +17,5 @@
 # Ab ek aur main cheez krni hai jo api call krke data fetch ho rha h Product.js se use bhi redux m hi krenge 
 * redux deals with the syncronous behaviour redux can't deal with async operations
 * to handle async logic in redux we use middleware
+* ab hm dekhenge kse middleware use krke api call krenge 
+* uske liye hme ek aur slice bnani pdhegi 

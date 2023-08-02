@@ -1,22 +1,34 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { add } from './store/cartSlice';
+import { getProducts } from './store/productSlice';
+import StatusCode from './utils/StatusCode';
 
 const Product = () => {
 
     const dispatch = useDispatch();
+    const {data: products, status} = useSelector(state => state.products)
 
     const addToCart = (product) => {
         dispatch(add(product))
     }
 
-    const [products, setProducts] = useState([]);
+    
 
     useEffect(() => {
-        fetch('https://fakestoreapi.com/products')
-        .then(data => data.json())
-        .then(result => setProducts(result))
+        dispatch(getProducts())
+        // fetch('https://fakestoreapi.com/products')
+        // .then(data => data.json())
+        // .then(result => setProducts(result))
     }, [])
+
+    if(status === StatusCode.LOADING){
+        return <p style={{marginTop: "150px"}}>Loading...</p>
+    }
+
+    if(status === StatusCode.ERROR){
+        return <p style={{marginTop: "150px"}}>Sorry something went wrong please try after sometime</p>
+    }
   
     const cards = products.map(product => {
         return (
@@ -39,11 +51,9 @@ const Product = () => {
         <div style={{textAlign: "center", marginTop: "105px"}}>
         <h1>Product Dashboard</h1>
         </div>
-        {products.length === 0 ? "Loading..." :
             <div style={{display: "flex", flexWrap: "wrap", textAlign: "center", justifyContent: "space-evenly"}}>
             {cards}
         </div>
-        }
       </>
     );
 }
